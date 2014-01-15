@@ -1,36 +1,34 @@
 #!/usr/bin/env ruby
 
-load "config.rb"
+load 'config.rb'
 
-require "sinatra"
-require "ridley"
+require 'sinatra'
+require 'chef'
 
-def get_chef_client()
-  ridley = Ridley.new(
-    server_url: CHEF_SERVER_URL,
-    client_name: CHEF_CLIENT_NAME,
-    client_key: CHEF_CLIENT_KEY,
-    ssl: {
-      verify: false
-    }
+def chef_rest(location)
+  conn = Chef::REST.new(
+    CHEF_SERVER_URL,
+    CHEF_CLIENT_NAME,
+    CHEF_CLIENT_KEY
   )
-  return ridley
+
+  begin
+    conn.get(location)
+  rescue Net::HTTPServerException => ex
+    $stderr.puts "#{location} : #{ex}"
+  end
 end
 
 def get_databag_list
-  ridley = get_chef_client()
-  return ridley.data_bag.all()
+  chef_rest('data')
 end
 
 def get_databag(databag)
-  ridley = get_chef_client()
-  return ridley.data_bag.find(databag)
+  chef_rest("data/#{databag}")
 end
 
 def get_databag_item(databag, item)
-  ridley = get_chef_client()
-  my_databag = ridley.data_bag.find(databag)
-  return my_databag.item.find(item)
+  chef_rest("data/#{databag}/#{item}")
 end
 
 get "/" do
@@ -39,20 +37,20 @@ get "/" do
   response[:items] = []
   databag_list = get_databag_list()
   response[:total] = databag_list.length
-  databag_list.each do |name|
+  databag_list.each do |name, location|
     databag = {}
-    databag["databag_name"] = name.chef_id
-    databag["databag"] = File.join(API_BASE_URL, name.chef_id)
+    databag["databag_name"] = name
+    databag["databag"] = File.join(API_BASE_URL, name)
     response[:items].push(databag)
   end
-  response.to_json()
+  response.to_json
 end
 
 get "/all" do
   content_type :json
   response = {}
   databag_list = get_databag_list()
-  databag_list.to_json()
+  databag_list.to_json
 end
 
 get "/:databag" do
@@ -62,10 +60,10 @@ get "/:databag" do
   response = {}
   response[:name] = name
   response[:items] = []
-  my_databag.item.all.each do |item|
-    response[:items].push File.join(API_BASE_URL, name, item.chef_id)
+  my_databag.each do |item, location|
+    response[:items].push File.join(API_BASE_URL, name, item)
   end
-  response.to_json()
+  response.to_json
 end
 
 get "/:databag/:item" do
@@ -73,6 +71,6 @@ get "/:databag/:item" do
   name = params[:databag]
   item = params[:item]
 
-  my_databag_item = get_databag_item(name, item)
-  my_databag_item.to_json()
+  item = get_databag_item(name, item)
+  item.to_json
 end
