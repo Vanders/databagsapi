@@ -17,7 +17,7 @@ http://www.apache.org/licenses/LICENSE-2.0.txt
 Configuration
 =============
 
-Configuration options are all at the start of cookbook-api.rb
+Configuration options are all at the top of config.ru
 
  * CHEF_SERVER_URL - The API URL to connect to where the script can download the cookbooks it serves
  * CHEF_CLIENT_NAME - The name of the client to connect to the API with
