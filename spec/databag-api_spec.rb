@@ -47,15 +47,15 @@ describe 'databag-api' do
     return databag_items
   end
 
-  it "returns a list of databags" do
+  it 'returns a list of databags' do
     get_databag_list
   end
 
-  it "returns a list of databag items" do
+  it 'returns a list of databag items' do
     get_databag_items_list
   end
 
-  it "returns a databag item" do
+  it 'returns a databag item' do
     bag_items = get_databag_items_list
     expect(bag_items['items'].length).to be > 0, 'No data bag items in response'
 
@@ -70,6 +70,10 @@ describe 'databag-api' do
       valid_json = false
     end
     expect(valid_json).to be_true, 'Response is not valid JSON'
+  end
 
+  it 'fails with an invalid URL' do
+    get "/not/a/valid/data_bag/item"
+    expect(last_response).not_to be_ok
   end
 end
