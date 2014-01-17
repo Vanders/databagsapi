@@ -1,0 +1,9 @@
+worker_processes 2
+preload_app true
+timeout 30
+listen "/home/databagapi/databagapi/unicorn.sock"
+stderr_path "/home/databagapi/databagapi/unicorn.stderr.log"
+stdout_path "/home/databagapi/databagapi/unicorn.stdout.log"
+working_directory "/home/databagapi/databagapi/current/"
+pid "/home/databagapi/databagapi/unicorn.pid"
+user "databagapi"
