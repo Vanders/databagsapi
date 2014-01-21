@@ -24,4 +24,3 @@ VERSION
 Gemfile.lock
 client.pem
 unicorn.rb
-config.ru

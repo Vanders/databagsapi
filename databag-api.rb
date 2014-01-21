@@ -17,6 +17,8 @@
 # limitations under the License.
 require 'chef'
 
+load 'databag-api.env'
+
 def chef_rest(location)
   conn = Chef::REST.new(
     CHEF_SERVER_URL,
