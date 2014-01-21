@@ -24,3 +24,4 @@ VERSION
 Gemfile.lock
 client.pem
 unicorn.rb
+databag-api.env
