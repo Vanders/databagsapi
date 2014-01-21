@@ -22,4 +22,5 @@ VERSION
 
 # Stop Chef re-installing every single time
 Gemfile.lock
+client.pem
 unicorn.rb
