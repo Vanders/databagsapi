@@ -19,3 +19,7 @@ doc/
 
 # Build artifacts
 VERSION
+
+# Stop Chef re-installing every single time
+Gemfile.lock
+unicorn.rb
