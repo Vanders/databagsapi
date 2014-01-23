@@ -17,9 +17,9 @@ http://www.apache.org/licenses/LICENSE-2.0.txt
 Configuration
 =============
 
-Configuration options are all at the top of config.ru
+Configuration options are loaded from `databag-api.env`. A `sample.env` is provided. The configuration options are
 
- * CHEF_SERVER_URL - The API URL to connect to where the script can download the cookbooks it serves
- * CHEF_CLIENT_NAME - The name of the client to connect to the API with
- * CHEF_CLIENT_KEY - The key for the client to use to connect
- * API_BASE_URL - The base URL the sinatra app will be listening at (used to make links back to itself)
+ * CHEF_SERVER_URL - Chef server API URL
+ * CHEF_CLIENT_NAME - Chef client name
+ * CHEF_CLIENT_KEY - Chef client key
+ * API_BASE_URL - The base URL of the Sinatra app. This is used to make links back to itself.
